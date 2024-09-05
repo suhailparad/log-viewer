@@ -12,13 +12,13 @@ class LogViewerServiceProvider extends ServiceProvider
     public function boot()
     {
         // Load routes
-        $this->loadRoutesFrom(__DIR__.'/routes/web.php');
+        $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
 
         // Load views
-        $this->loadViewsFrom(__DIR__.'/resources/views', 'log-viewer');
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'log-viewer');
 
         $this->publishes([
-            __DIR__.'/config/log-viewer.php' => config_path('log-viewer.php'),
+            __DIR__.'/../config/log-viewer.php' => config_path('log-viewer.php'),
         ]);
 
     }
@@ -28,6 +28,6 @@ class LogViewerServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        // Register any bindings or singletons
+        $this->mergeConfigFrom(__DIR__.'/../config/log-viewer.php', 'log-viewer');
     }
 }

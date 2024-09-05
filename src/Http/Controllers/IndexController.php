@@ -5,8 +5,17 @@ namespace Suhailparad\LogViewer\Http\Controllers;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Suhailparad\LogViewer\Utility\LogViewerUtility;
+use Illuminate\Routing\Controller;
 
-class IndexController{
+class IndexController extends Controller{
+
+    /**
+     * Class constructor.
+     */
+    public function __construct()
+    {
+        $this->middleware(config('log-viewer.middlewares',[]));
+    }
 
     public function index($file_id=null)
     {
@@ -72,13 +81,9 @@ class IndexController{
         }
         $logsCollection = LogViewerUtility::paginate($logsCollection);
         return view("log-viewer::index",[
-            'log_files' => $logFiles,
             'logs' => $logsCollection,
-            'log_index' => $log_index,
-            'app_name' => config('app.name'),
-            'app_url' => config('log-viewer.back_url'),
-            'title' => config('log-viewer.custom_title'),
-            'query' => request('query',null)
+            'log_files' => $logFiles,
+            'log_index' => $log_index
         ]);
     }
 }

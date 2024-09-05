@@ -9,7 +9,12 @@ return[
     'multi_tenant' => false,
 
     //Back URL
-    'back_url' => '/logs'
+    'back_url' => '/logs',
 
+    //Log viewer route prefix
+    'route_prefix' => 'logs',
+
+    //Middleware
+    'middlewares' => ['auth']
 
 ];
