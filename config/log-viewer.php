@@ -15,6 +15,6 @@ return[
     'route_prefix' => 'logs',
 
     //Middleware
-    'middlewares' => ['auth']
+    'middlewares' => ['web','auth']
 
 ];

@@ -1,6 +1,6 @@
 {
     "name": "suhailparad/log-viewer",
-    "version": "v1.0.3",
+    "version": "v1.0.4",
     "description": "User-friendly log viewer for your Laravel application.",
     "type": "library",
     "license": "MIT",
