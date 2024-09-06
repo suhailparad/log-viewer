@@ -56,7 +56,7 @@ class IndexController extends Controller{
                 if(config('log-viewer.multi_tenant')){
                     $tenant_id = config('app.tenant_id');
                     $log_tenant_id = LogViewerUtility::getLogTenantId($matches[2]);
-                    if($tenant_id!==$log_tenant_id){
+                    if($tenant_id!==$log_tenant_id && $log_tenant_id !=null){
                         $addToArray = false;
                     }
                 }

@@ -11,5 +11,5 @@ Route::middleware([
     ])
     ->prefix(config("log-viewer.route_prefix"))
     ->group(function(){
-        Route::get('/{file_id?}', [IndexController::class,'index']);
+        Route::get('/{file_id?}', [IndexController::class,'index'])->name('logs.index');
     });

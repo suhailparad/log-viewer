@@ -68,7 +68,7 @@
         <div class="row">
             <div class="col-3">
                 @foreach ($log_files as $file )
-                    <a href="/logs/{{ $file['id'] }}" class="px-3 py-10px mb-2 border rounded bg-white d-flex align-items-baseline text-decoration-none {{($log_index+1)==$file['id']?'active-file':''}}" role="button">
+                    <a href="{{ route('logs.index', $file['id']) }}" class="px-3 py-10px mb-2 border rounded bg-white d-flex align-items-baseline text-decoration-none {{($log_index+1)==$file['id']?'active-file':''}}" role="button">
                         <span href="?file={{$file['id']}}" class="fs-14px fw-500 text-dark" >{{$file['name']}}</span>
                         <span class="text-secondary fs-13px fw-500  ms-auto">{{$file['size']}}</span>
                     </a>
