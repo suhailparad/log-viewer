@@ -51,7 +51,18 @@ class IndexController extends Controller{
                     $groupedLogs[] = $currentLog;
                     $currentLog = [];
                 }
-                if($matches[1] !="previous exception"){
+
+                $addToArray=true;
+                if(config('log-viewer.multi_tenant')){
+                    $tenant_id = config('app.tenant_id');
+                    $log_tenant_id = LogViewerUtility::getLogTenantId($matches[2]);
+                    if($tenant_id!==$log_tenant_id){
+                        $addToArray = false;
+                    }
+                }
+
+                // config('app.current_tenant')
+                if($matches[1] !="previous exception" && $addToArray){
                     $currentLog = [
                         'datetime' => $matches[1],
                         'type' =>  LogViewerUtility::getLogType($matches[2]),

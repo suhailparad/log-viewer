@@ -49,6 +49,16 @@ class LogViewerUtility{
 
     public static function getLogType($type){
         $splitted_type = explode(".",$type);
+        if(count($splitted_type)>2)
+            return strtolower($splitted_type[2]);
         return strtolower($splitted_type[1]);
+    }
+
+    public static function getLogTenantId($payload){
+        $payload = explode(".",$payload);
+        $tenant_data =  $payload[0];
+        $tenant = explode('-',$tenant_data);
+        if($tenant[0]=='tenant')
+            return (int)$tenant[1];
     }
 }

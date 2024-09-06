@@ -6,7 +6,7 @@ return[
     'custom_title' => 'Laravel Log Viewer',
 
     //Set true if multi tenant support log viewer
-    'multi_tenant' => false,
+    'multi_tenant' => true,
 
     //Back URL
     'back_url' => '/logs',
