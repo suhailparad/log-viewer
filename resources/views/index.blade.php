@@ -76,8 +76,18 @@
             </div>
             <div class="col-9">
                 <div class="mb-2 d-flex align-items-center">
-                    <div>
-                        <span class="fs-14px">Total <span class="fw-500">{{ $logs->total() }}</span> Records</span>
+                    <div class="d-flex align-items-center">
+                        <span class="fs-14px d-inline-block">Total <span class="fw-500">{{ $logs->total() }}</span> Records</span>
+
+                        @if($is_multi_tenant)
+                        <form id="filter-form" method="GET">
+                            <label>
+                                <input type="checkbox" id="show-all" class="ms-3" {{ $showAll ? 'checked' : '' }} />
+                                <span class="fs-14px">Show all logs</span>
+                            </label>
+                        </form>
+                        @endif
+
                     </div>
 
                     <div class="ms-auto w-25">
@@ -105,7 +115,6 @@
                                 <span class="fs-13px fw-500" style="color:#444" >{!! $log['title'] !!}</span>
                             </div>
                         </div>
-
                         @if($log['message'])
                             <div class="border-top p-3 fs-13px log-details d-none .custom-transition">
                                 {!! $log['message'] !!}
@@ -138,6 +147,27 @@
                     $logDetails.addClass("d-none");
                 }
             });
+
+            $("#show-all").change(function() {
+                let isChecked = $(this).is(":checked");
+                let form = $("#filter-form");
+
+                if (isChecked) {
+                    // Add 'show_all' parameter to the form action
+                    $('<input>').attr({
+                        type: 'hidden',
+                        name: 'show_all',
+                        value: '1'
+                    }).appendTo(form);
+                } else {
+                    // Remove 'show_all' parameter if unchecked
+                    form.find("input[name='show_all']").remove();
+                }
+
+                // Submit the form
+                form.submit();
+            });
+
 
             $("#search-close").on('click',function(){
                 $('#search-input').val(null);

@@ -19,14 +19,23 @@ class IndexController extends Controller{
 
     public function index($file_id=null)
     {
+        $showAll = request()->has('show_all');
         $logFiles = [];
-        foreach (File::files(storage_path('logs')) as $key => $file) {
+        $files = File::files(storage_path('logs'));
+
+        // Sort files by creation time
+        usort($files, function ($a, $b) {
+            return $b->getCTime() <=> $a->getCTime(); // Compare creation times
+        });
+
+        foreach ($files as $key => $file) {
             $logFiles[] = [
                 'id' => $key+1,
                 'name' => $file->getFilename(),
                 'size' =>  LogViewerUtility::formatBytes($file->getSize())
             ];
         }
+
         $file_name = $logFiles[0]['name'];
         $log_index = 0;
 
@@ -56,8 +65,13 @@ class IndexController extends Controller{
                 if(config('log-viewer.multi_tenant')){
                     $tenant_id = config('app.tenant_id');
                     $log_tenant_id = LogViewerUtility::getLogTenantId($matches[2]);
-                    if($tenant_id!==$log_tenant_id && $log_tenant_id !=null){
-                        $addToArray = false;
+                    if($showAll){
+                        if($log_tenant_id != $tenant_id && $log_tenant_id !=null)
+                            $addToArray=false;
+                    }else{
+                        if($log_tenant_id != $tenant_id){
+                            $addToArray=false;
+                        }
                     }
                 }
 
@@ -91,10 +105,13 @@ class IndexController extends Controller{
             });
         }
         $logsCollection = LogViewerUtility::paginate($logsCollection);
+
         return view("log-viewer::index",[
             'logs' => $logsCollection,
             'log_files' => $logFiles,
-            'log_index' => $log_index
+            'log_index' => $log_index,
+            'showAll' => $showAll,
+            'is_multi_tenant' => config('log-viewer.multi_tenant')
         ]);
     }
 }
