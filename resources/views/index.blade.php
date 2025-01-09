@@ -106,7 +106,7 @@
                             </div>
                         </div>
 
-                        @if($log['has_multi_line'])
+                        @if($log['message'])
                             <div class="border-top p-3 fs-13px log-details d-none .custom-transition">
                                 {!! $log['message'] !!}
                             </div>
