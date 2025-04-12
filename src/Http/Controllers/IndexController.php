@@ -28,12 +28,18 @@ class IndexController extends Controller{
             return $b->getCTime() <=> $a->getCTime(); // Compare creation times
         });
 
-        foreach ($files as $key => $file) {
+        $index = 1;
+        foreach ($files as $file) {
+            $filename = $file->getFilename();
+            if (strpos($filename, 'laravel-') !== 0) {
+                continue;
+            }
             $logFiles[] = [
-                'id' => $key+1,
+                'id' => $index,
                 'name' => $file->getFilename(),
                 'size' =>  LogViewerUtility::formatBytes($file->getSize())
             ];
+            $index++;
         }
 
         $file_name = $logFiles[0]['name'];
