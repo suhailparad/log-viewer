@@ -124,4 +124,49 @@ class IndexController extends Controller{
             'is_multi_tenant' => config('log-viewer.multi_tenant')
         ]);
     }
+
+    public function download($file_id,$key){
+        $secret_key = config('log-viewer.secret_key');
+
+        if($key!=$secret_key){
+            abort(403);
+        }
+
+        $files = File::files(storage_path('logs'));
+
+        // Sort files by creation time
+        usort($files, function ($a, $b) {
+            return $b->getCTime() <=> $a->getCTime(); // Compare creation times
+        });
+
+        $index = 0;
+        foreach ($files as $file) {
+            $filename = $file->getFilename();
+            if (strpos($filename, 'laravel-') !== 0) {
+                continue;
+            }
+            $index++;
+            $logFiles[] = [
+                'id' => $index,
+                'name' => $file->getFilename(),
+                'size' =>  LogViewerUtility::formatBytes($file->getSize())
+            ];
+        }
+
+        if($file_id!=null && !isset($logFiles[$file_id-1])){
+            abort(404);
+        }
+        $file_name = $logFiles[$file_id-1]['name'];
+
+        $path = storage_path("logs/{$file_name}");
+
+        // Check if the file exists
+        if (!File::exists($path)) {
+            abort(404, "Log file not found.");
+        }
+
+        // Return the file as a download response
+        return response()->download($path);
+
+    }
 }

@@ -15,6 +15,9 @@ return[
     'route_prefix' => 'logs',
 
     //Middleware
-    'middlewares' => ['web','auth']
+    'middlewares' => ['web','auth'],
+
+    //Secret key for download all logs
+    'secret_key' => env('LOG_SECRET_KEY','17fc8f0a595ea4a7')
 
 ];

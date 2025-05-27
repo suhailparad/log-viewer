@@ -12,4 +12,5 @@ Route::middleware([
     ->prefix(config("log-viewer.route_prefix"))
     ->group(function(){
         Route::get('/{file_id?}', [IndexController::class,'index'])->name('logs.index');
+        Route::get('/{file_id}/download/{key}', [IndexController::class,'download'])->name('logs.download-all');
     });
